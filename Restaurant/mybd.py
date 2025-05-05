@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-
+from datetime import datetime
 def get_connection():
     try:
         connection = mysql.connector.connect(
@@ -14,3 +14,24 @@ def get_connection():
     except Error as e:
         print("Ошибка подключения:", e)
         return None
+
+def get_today_orders():
+    conn = get_connection()
+    try:
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT id, date, status, canceled
+            FROM sales
+            WHERE DATE(date) = CURDATE()
+            ORDER BY date DESC
+        """)
+        orders = cursor.fetchall()
+        for order in orders:
+            order["date"] = order["date"] if isinstance(order["date"], datetime) else datetime.strptime(order["date"], "%Y-%m-%d %H:%M:%S")
+        return orders
+    except Exception as e:
+        print("Ошибка при получении заказов:", e)
+        return []
+    finally:
+        if conn.is_connected():
+            conn.close()
