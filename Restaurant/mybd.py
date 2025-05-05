@@ -23,7 +23,16 @@ def get_today_orders():
             SELECT id, date, status, canceled
             FROM sales
             WHERE DATE(date) = CURDATE()
-            ORDER BY date DESC
+            ORDER BY 
+                CASE status
+                    WHEN 'Готов' THEN 1
+                    WHEN 'Готовится' THEN 2
+                    WHEN 'Завершён' THEN 3
+                    WHEN 'Отказ' THEN 4
+                    ELSE 5
+                END,
+                date DESC
+                
         """)
         orders = cursor.fetchall()
         for order in orders:

@@ -1,4 +1,5 @@
 from mybd import get_today_orders
+from mybd import get_connection
 import tkinter as tk
 from tkinter import  messagebox
 import mysql.connector
@@ -110,11 +111,39 @@ def setup_center_panel():
 def create_order():
     print("Создание нового заказа...")
 
-def show_details(order_id):
-    print(f"Показать детали заказа #{order_id}")
+def show_details(sales_id):
+    detail_window = tk.Toplevel()
+    detail_window.title("Детали заказа")
 
-def complete_order(order_id):
-    print(f"Заказ #{order_id} завершён (отдан клиенту)")
+    # Запрос блюд, связанных с заказом
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = '''
+        SELECT d.name, d.status
+        FROM dishes d
+        JOIN sales_has_dishes sd ON d.id = sd.dishes_id
+        WHERE sd.sales_id = %s
+    '''
+    cursor.execute(query, (sales_id,))
+    dishes = cursor.fetchall()
+
+    # Отображение блюд квадратиками
+    for i, (name, status) in enumerate(dishes):
+        frame = tk.Frame(detail_window, width=120, height=80, bg='lightblue', relief='raised', borderwidth=2)
+        frame.grid(row=i // 3, column=i % 3, padx=10, pady=10)
+        label = tk.Label(frame, text=f"{name}\n{status}", bg='lightblue', justify='center')
+        label.place(relx=0.5, rely=0.5, anchor='center')
+
+    cursor.close()
+
+def complete_order(sales_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = "UPDATE sales SET status = 'завершён' WHERE id = %s"
+    cursor.execute(query, (sales_id,))
+    conn.commit()
+    cursor.close()
+
 
 setup_left_panel()
 setup_center_panel()
