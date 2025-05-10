@@ -20,7 +20,7 @@ def get_today_orders():
     try:
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""
-            SELECT id, date, status, canceled
+            SELECT id, date, status
             FROM sales
             WHERE DATE(date) = CURDATE()
             ORDER BY 

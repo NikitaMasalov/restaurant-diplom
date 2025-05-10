@@ -1,8 +1,7 @@
 from mybd import get_today_orders
 from mybd import get_connection
 import tkinter as tk
-from tkinter import  messagebox
-import mysql.connector
+
 
 root = tk.Tk()
 root.title("Касса")
@@ -60,11 +59,10 @@ def setup_center_panel():
 
         order_id = order["id"]
         status = order["status"]
-        canceled = order["canceled"]
+
         created_at = order["date"].strftime("%H:%M")
 
-        if canceled:
-            status = "отказ"
+
 
         bg_color = "#ffffff"
         if status == "готов":
