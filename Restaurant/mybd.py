@@ -26,7 +26,7 @@ def get_today_orders():
             ORDER BY 
                 CASE status
                     WHEN 'Готов' THEN 1
-                    WHEN 'Готовится' THEN 2
+                    WHEN 'в ожидании' THEN 2
                     WHEN 'Завершён' THEN 3
                     WHEN 'Отказ' THEN 4
                     ELSE 5
