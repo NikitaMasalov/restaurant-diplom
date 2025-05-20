@@ -7,12 +7,7 @@ from datetime import datetime
 def open_kitchen_interface(user_data):
     cook_window = tk.Tk()
     cook_window.title(f"Повар - {user_data['name']}")
-
-    screen_width = cook_window.winfo_screenwidth()
-    screen_height = cook_window.winfo_screenheight()
-    window_width = screen_width - 100
-    window_height = screen_height - 100
-    cook_window.geometry(f"{window_width}x{window_height}+50+50")
+    cook_window.state('zoomed')
 
     bg_main = "#e6f2ff"
     panel_color = "#d9eaff"

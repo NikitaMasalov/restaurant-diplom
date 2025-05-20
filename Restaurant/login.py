@@ -73,6 +73,7 @@ root = tk.Tk()
 root.title("Вход в систему")
 root.geometry("300x200")
 
+
 label = tk.Label(root, text="Войдите в систему", font=("Arial", 14, "bold"))
 label.pack(pady=10)
 

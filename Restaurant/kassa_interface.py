@@ -7,12 +7,7 @@ from tkinter import messagebox
 def open_kassa_interface(user_data):
     root = tk.Tk()
     root.title(f"Касса - {user_data['name']}")
-
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    window_width = screen_width - 100
-    window_height = screen_height - 100
-    root.geometry(f"{window_width}x{window_height}+50+50")
+    root.state('zoomed')
 
     bg_main = "#e6f2ff"
     panel_color = "#d9eaff"

@@ -7,12 +7,7 @@ from tkinter import messagebox, simpledialog
 def open_new_order_window(user_data):
     order_window = tk.Toplevel()
     order_window.title(f"Новый заказ - Кассир: {user_data['name']}")
-
-    screen_width = order_window.winfo_screenwidth()
-    screen_height = order_window.winfo_screenheight()
-    window_width = screen_width - 100
-    window_height = screen_height - 100
-    order_window.geometry(f"{window_width}x{window_height}+50+50")
+    order_window.state('zoomed')
 
     bg_main = "#e6f2ff"
     panel_color = "#d9eaff"
