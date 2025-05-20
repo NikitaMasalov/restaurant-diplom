@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
 
-from kitchen_interface import open_cook_interface
+from kitchen_interface import open_kitchen_interface
 from manager_interface import open_manager_interface
 from kassa_interface import  open_kassa_interface
 
@@ -37,7 +37,7 @@ def login():
             if user_data["position"] == "Кассир":
                 open_kassa_interface(user_data)
             elif user_data["position"] == "Повар":
-                open_cook_interface(user_data)
+                open_kitchen_interface(user_data)
             elif user_data["position"] == "Менеджер":
                 open_manager_choice(user_data)
             else:
@@ -60,7 +60,7 @@ def open_manager_choice(user_data):
     btn_cashier.pack(pady=10, fill=tk.X, padx=50)
 
     btn_cook = tk.Button(choice_window, text="Повар", font=("Arial", 14),
-                         command=lambda: [choice_window.destroy(), open_cook_interface(user_data)])
+                         command=lambda: [choice_window.destroy(), open_kitchen_interface(user_data)])
     btn_cook.pack(pady=10, fill=tk.X, padx=50)
 
     btn_manager = tk.Button(choice_window, text="Менеджер", font=("Arial", 14),

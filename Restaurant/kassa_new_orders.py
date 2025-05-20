@@ -206,9 +206,11 @@ def open_new_order_window(user_data):
             cursor = conn.cursor()
 
             try:
-                points_to_add = int(total * 0.15) if client_data['id'] else 0
-                points_to_use = min(client_data['points'], total) if use_points and client_data['id'] else 0
-                final_amount = total - points_to_use
+                points_to_add = int(float(total) * 0.15)
+                points_to_use = min(float(client_data['points']), float(total)) if use_points and client_data[
+                    'id'] else 0
+                final_amount = float(total) - float(points_to_use)
+
 
                 cursor.execute(
                     "INSERT INTO sales (date, status, client_id, employee_id, price) "
@@ -256,10 +258,10 @@ def open_new_order_window(user_data):
                             )
 
                 if client_data['id']:
-                    new_points = client_data['points'] - points_to_use + points_to_add
+                    new_points = float(client_data['points']) - float(points_to_use) + float(points_to_add)
                     cursor.execute(
                         "UPDATE client SET points = %s WHERE id = %s",
-                        (new_points, client_data['id'])
+                        (int(new_points), client_data['id'])
                     )
 
                 conn.commit()

@@ -1,7 +1,8 @@
 from mybd import get_today_orders, get_connection
+from  kassa_new_orders import open_new_order_window
 import tkinter as tk
 from datetime import datetime
-
+from tkinter import messagebox
 
 def open_kassa_interface(user_data):
     root = tk.Tk()
@@ -132,7 +133,7 @@ def open_kassa_interface(user_data):
         root.after(60000, auto_refresh)
 
     def create_order():
-        print("Создание нового заказа...")
+        open_new_order_window(user_data)
 
     setup_left_panel()
 
