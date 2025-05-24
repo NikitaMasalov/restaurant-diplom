@@ -19,6 +19,7 @@ def open_kitchen_interface(user_data):
     container = tk.Frame(cook_window, bg=panel_color)
     container.pack(fill=tk.BOTH, expand=True)
 
+    #Вывод заказов
     def refresh_orders():
         for widget in orders_frame.winfo_children():
             widget.destroy()
@@ -113,6 +114,7 @@ def open_kitchen_interface(user_data):
             cursor.close()
             conn.close()
 
+    #Перевод в готово (завершение готовки)
     def finish_cooking(dish):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)

@@ -89,11 +89,13 @@ def open_manager_interface(user_data):
         analytics_frame.chart_canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
         analytics_frame.chart_ax = ax
 
+    #Данные для аналитики
     def update_analytics():
         conn = get_connection()
         try:
             cursor = conn.cursor(dictionary=True)
 
+            #Прибыль за сегодня
             cursor.execute("""
                 SELECT SUM(price) as total 
                 FROM sales 
@@ -103,6 +105,7 @@ def open_manager_interface(user_data):
             profit = result['total'] if result['total'] else 0
             analytics_frame.today_profit_label.config(text=f"{profit:.2f} ₽")
 
+            #Среднее время готовки
             cursor.execute("""
                 SELECT AVG(TIMESTAMPDIFF(MINUTE, start_time, end_time)) as avg_time 
                 FROM dishes 
@@ -112,6 +115,7 @@ def open_manager_interface(user_data):
             avg_time = result['avg_time'] if result['avg_time'] else 0
             analytics_frame.avg_cooking_label.config(text=f"{int(avg_time)} мин")
 
+            #Колличество заказов за сегодня
             cursor.execute("""
                 SELECT COUNT(*) as count 
                 FROM sales 
@@ -120,6 +124,7 @@ def open_manager_interface(user_data):
             result = cursor.fetchone()
             analytics_frame.orders_count_label.config(text=result['count'])
 
+            #Популярное блюдо сегодня
             cursor.execute("""
                 SELECT m.name, COUNT(*) as count 
                 FROM dishes d
@@ -137,6 +142,7 @@ def open_manager_interface(user_data):
             else:
                 analytics_frame.popular_dish_label.config(text="-")
 
+            #Вывод прибыли в график (7 дней)
             cursor.execute("""
                 SELECT DATE(date) as day, SUM(price) as total
                 FROM sales

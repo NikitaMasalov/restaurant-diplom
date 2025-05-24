@@ -45,6 +45,7 @@ def open_kassa_interface(user_data):
                  fg=text_color).pack(
             anchor="n", pady=20, padx=10)
 
+#Вывод деталей заказа
     def show_details(sales_id):
         detail_window = tk.Toplevel()
         detail_window.title(f"Детали заказа #{sales_id}")
@@ -67,6 +68,7 @@ def open_kassa_interface(user_data):
             tk.Label(frame, text=dish['name'], font=("Arial", 11, "bold"), bg='lightblue').pack(pady=5)
             tk.Label(frame, text=dish['status'], font=("Arial", 10), bg='lightblue').pack()
 
+#Перевод в статус завершен
     def complete_order(order_id):
         conn = get_connection()
         cursor = conn.cursor()

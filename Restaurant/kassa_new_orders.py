@@ -24,6 +24,7 @@ def open_new_order_window(user_data):
     categories = []
     menu_items = []
 
+    #Вывод категорий
     def load_categories():
         nonlocal categories
         conn = get_connection()
@@ -35,6 +36,7 @@ def open_new_order_window(user_data):
         categories.insert(0, "Все")
         update_category_buttons()
 
+    #Вывод меню
     def load_menu_items(category=None):
         nonlocal menu_items
         conn = get_connection()
@@ -145,6 +147,7 @@ def open_new_order_window(user_data):
             cart.pop(index)
         update_cart_display()
 
+    #Вход и регестрация клиента (для баллов)
     def ask_client_number():
         phone = simpledialog.askstring("Клиент", "Введите номер телефона клиента (необязательно):")
         if phone:
@@ -191,6 +194,7 @@ def open_new_order_window(user_data):
         tk.Button(client_frame, text="Выбрать клиента", font=("Arial", 12),
                   bg=btn_color, fg=btn_text_color, command=ask_client_number).pack(anchor="w", padx=10, pady=10)
 
+    #Основная логика покупки
     def process_payment(total, use_points=False):
         if not cart:
             messagebox.showerror("Ошибка", "Корзина пуста!")

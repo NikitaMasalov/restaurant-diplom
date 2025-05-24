@@ -1,6 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
 from datetime import datetime
+
+#Подключение к бд
 def get_connection():
     try:
         connection = mysql.connector.connect(
@@ -15,6 +17,7 @@ def get_connection():
         print("Ошибка подключения:", e)
         return None
 
+#Вывод заказов на кассу
 def get_today_orders():
     conn = get_connection()
     try:
