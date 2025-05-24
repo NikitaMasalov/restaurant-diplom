@@ -22,7 +22,7 @@ def open_manager_interface(user_data):
     style = ttk.Style()
     style.configure("TFrame", background=bg_color)
     style.configure("TLabel", background=bg_color, foreground=text_color)
-    style.configure("TButton", background=accent_color, foreground="white")
+    style.configure("TButton", background=accent_color, foreground="black")
     style.map("TButton", background=[('active', '#3a5a80')])
 
     nav_frame = ttk.Frame(root, padding="10")

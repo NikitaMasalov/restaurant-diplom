@@ -56,15 +56,15 @@ def open_manager_choice(user_data):
     label.pack(pady=20)
 
     btn_cashier = tk.Button(choice_window, text="Касса", font=("Arial", 14),
-                            command=lambda: [choice_window.destroy(), open_kassa_interface(user_data)])
+                            command=lambda: [open_kassa_interface(user_data)])
     btn_cashier.pack(pady=10, fill=tk.X, padx=50)
 
     btn_cook = tk.Button(choice_window, text="Повар", font=("Arial", 14),
-                         command=lambda: [choice_window.destroy(), open_kitchen_interface(user_data)])
+                         command=lambda: [open_kitchen_interface(user_data)])
     btn_cook.pack(pady=10, fill=tk.X, padx=50)
 
     btn_manager = tk.Button(choice_window, text="Менеджер", font=("Arial", 14),
-                            command=lambda: [choice_window.destroy(), open_manager_interface(user_data)])
+                            command=lambda: [open_manager_interface(user_data)])
     btn_manager.pack(pady=10, fill=tk.X, padx=50)
 
     choice_window.mainloop()

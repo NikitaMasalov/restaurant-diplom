@@ -206,7 +206,6 @@ def open_new_order_window(user_data):
                     'id'] else 0
                 final_amount = float(total) - float(points_to_use)
 
-
                 cursor.execute(
                     "INSERT INTO sales (date, status, client_id, employee_id, price) "
                     "VALUES (NOW(), 'в ожидании', %s, %s, %s)",
@@ -223,17 +222,18 @@ def open_new_order_window(user_data):
 
                     recipe_id = recipe_result[0]
 
-                    cursor.execute(
-                        "INSERT INTO dishes (menu_id, recipe_id, name, status, start_time, price) "
-                        "VALUES (%s, %s, %s, 'в ожидании', NOW(), %s)",
-                        (item['id'], recipe_id, item['name'], item['price'])
-                    )
-                    dish_id = cursor.lastrowid
+                    for _ in range(item['quantity']):
+                        cursor.execute(
+                            "INSERT INTO dishes (menu_id, recipe_id, name, status, start_time, price) "
+                            "VALUES (%s, %s, %s, 'в ожидании', NOW(), %s)",
+                            (item['id'], recipe_id, item['name'], item['price'])
+                        )
+                        dish_id = cursor.lastrowid
 
-                    cursor.execute(
-                        "INSERT INTO sales_has_dishes (sales_id, dishes_id) VALUES (%s, %s)",
-                        (sale_id, dish_id)
-                    )
+                        cursor.execute(
+                            "INSERT INTO sales_has_dishes (sales_id, dishes_id) VALUES (%s, %s)",
+                            (sale_id, dish_id)
+                        )
 
                     cursor.execute(
                         "SELECT workpieces_id, amount FROM recipe_has_workpieces WHERE recipe_id = %s",
