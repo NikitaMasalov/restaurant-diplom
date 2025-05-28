@@ -79,9 +79,13 @@ def open_manager_interface(user_data):
         analytics_frame.orders_count_label = ttk.Label(metrics_frame, text="0", font=('Arial', 12, 'bold'))
         analytics_frame.orders_count_label.grid(row=2, column=1, sticky='w', padx=10)
 
-        ttk.Label(metrics_frame, text="Популярное блюдо:", font=('Arial', 12)).grid(row=3, column=0, sticky='w')
+        ttk.Label(metrics_frame, text="Популярное блюдо сегодня:", font=('Arial', 12)).grid(row=3, column=0, sticky='w')
+        analytics_frame.popular_dish_day_label = ttk.Label(metrics_frame, text="-", font=('Arial', 12, 'bold'))
+        analytics_frame.popular_dish_day_label.grid(row=3, column=1, sticky='w', padx=10)
+
+        ttk.Label(metrics_frame, text="Популярное блюдо:", font=('Arial', 12)).grid(row=4, column=0, sticky='w')
         analytics_frame.popular_dish_label = ttk.Label(metrics_frame, text="-", font=('Arial', 12, 'bold'))
-        analytics_frame.popular_dish_label.grid(row=3, column=1, sticky='w', padx=10)
+        analytics_frame.popular_dish_label.grid(row=4, column=1, sticky='w', padx=10)
 
         fig = plt.Figure(figsize=(8, 4), dpi=100)
         ax = fig.add_subplot(111)
@@ -136,6 +140,23 @@ def open_manager_interface(user_data):
                 ORDER BY count DESC
                 LIMIT 1
             """)
+            result = cursor.fetchone()
+            if result:
+                analytics_frame.popular_dish_day_label.config(text=f"{result['name']} ({result['count']} шт)")
+            else:
+                analytics_frame.popular_dish_day_label.config(text="-")
+
+                # Популярное блюдо за все время
+            cursor.execute("""
+                SELECT m.name, COUNT(*) as count 
+                FROM dishes d
+                JOIN menu m ON d.menu_id = m.id
+                JOIN sales_has_dishes sd ON d.id = sd.dishes_id
+                JOIN sales s ON sd.sales_id = s.id
+                GROUP BY m.name
+                ORDER BY count DESC
+                LIMIT 1
+                        """)
             result = cursor.fetchone()
             if result:
                 analytics_frame.popular_dish_label.config(text=f"{result['name']} ({result['count']} шт)")
