@@ -6,6 +6,7 @@ import mysql.connector
 from kitchen_interface import open_kitchen_interface
 from manager_interface import open_manager_interface
 from kassa_interface import  open_kassa_interface
+from kitchen_blanks import open_ingredients_window
 
 
 def login():
@@ -59,9 +60,13 @@ def open_manager_choice(user_data):
                             command=lambda: [open_kassa_interface(user_data)])
     btn_cashier.pack(pady=10, fill=tk.X, padx=50)
 
-    btn_cook = tk.Button(choice_window, text="Повар", font=("Arial", 14),
+    btn_cook = tk.Button(choice_window, text="Кухня", font=("Arial", 14),
                          command=lambda: [open_kitchen_interface(user_data)])
     btn_cook.pack(pady=10, fill=tk.X, padx=50)
+
+    btn_blanks = tk.Button(choice_window, text="Заготовки", font=("Arial", 14),
+                         command=lambda: [open_ingredients_window(user_data)])
+    btn_blanks.pack(pady=10, fill=tk.X, padx=50)
 
     btn_manager = tk.Button(choice_window, text="Менеджер", font=("Arial", 14),
                             command=lambda: [open_manager_interface(user_data)])
