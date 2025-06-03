@@ -75,7 +75,7 @@ def open_ingredients_window(user_data):
                 name_label.pack(pady=(5, 10))
 
                 amount_label = tk.Label(frame,
-                                        text=f"{amount:.2f} {ing.get('unit', 'шт')}",
+                                        text=f"{amount:.2f} {ing.get('unit', 'кг')}",
                                         font=("Arial", 14),
                                         bg="white")
                 amount_label.pack()
