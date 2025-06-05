@@ -49,11 +49,8 @@ def open_manager_interface(user_data):
 
 
     buttons = [
-        ("Аналитика", lambda: show_frame(analytics_frame)),
-        ("Заказы", lambda: show_frame(orders_frame)),
-        ("Заготовки", lambda: show_frame(ingredients_frame)),
-        ("Меню", lambda: show_frame(menu_frame)),
-        ("Сотрудники", lambda: show_frame(employees_frame))
+        ("Аналитика", lambda: show_frame(analytics_frame))
+
     ]
 
     for text, command in buttons:

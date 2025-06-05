@@ -9,10 +9,10 @@ def open_ingredients_window(user_data):
     ing_window.state('zoomed')
 
     bg_color = "#f0f0f0"
-    warning_color = "#ffcc80"  # Оранжевый для предупреждения
-    danger_color = "#ff8a80"  # Красный для критического уровня
-    normal_color = "#e3f2fd"  # Голубой для нормального уровня
-    btn_color = "#4caf50"  # Зеленый для кнопок
+    warning_color = "#ffcc80"
+    danger_color = "#ff8a80"
+    normal_color = "#e3f2fd"
+    btn_color = "#4caf50"
 
     ing_window.configure(bg=bg_color)
 
@@ -75,7 +75,7 @@ def open_ingredients_window(user_data):
                 name_label.pack(pady=(5, 10))
 
                 amount_label = tk.Label(frame,
-                                        text=f"{amount:.2f} {ing.get('unit', 'кг')}",
+                                        text=f"{amount:.2f} {ing.get('unit', 'г')}",
                                         font=("Arial", 14),
                                         bg="white")
                 amount_label.pack()

@@ -2,6 +2,7 @@ from mybd import get_connection
 import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
+import hashlib
 
 from kitchen_interface import open_kitchen_interface
 from manager_interface import open_manager_interface
@@ -20,31 +21,38 @@ def login():
     try:
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, position FROM employee WHERE name=%s AND password_cash=%s",
-                       (username, password))
+
+        cursor.execute("SELECT id, name, position, password_cash FROM employee WHERE name=%s", (username,))
         result = cursor.fetchone()
         cursor.close()
         conn.close()
 
         if result:
-            user_data = {
-                "id": result[0],
-                "name": result[1],
-                "position": result[2]
-            }
+            stored_password_hash = result[3]
+            input_password_hash = hashlib.md5(password.encode('utf-8')).hexdigest()
 
-            root.destroy()
+            if input_password_hash == stored_password_hash:
+                user_data = {
+                    "id": result[0],
+                    "name": result[1],
+                    "position": result[2]
+                }
 
-            if user_data["position"] == "Кассир":
-                open_kassa_interface(user_data)
-            elif user_data["position"] == "Повар":
-                open_kitchen_interface(user_data)
-            elif user_data["position"] == "Менеджер":
-                open_manager_choice(user_data)
+                root.destroy()
+
+                if user_data["position"] == "Кассир":
+                    open_kassa_interface(user_data)
+                elif user_data["position"] == "Повар":
+                    open_kitchen_interface(user_data)
+                elif user_data["position"] == "Менеджер":
+                    open_manager_choice(user_data)
+                else:
+                    messagebox.showwarning("Ошибка", "Неизвестная должность")
             else:
-                messagebox.showwarning("Ошибка", "Неизвестная должность")
+                messagebox.showerror("Ошибка", "Неверный логин или пароль")
         else:
             messagebox.showerror("Ошибка", "Неверный логин или пароль")
+
     except mysql.connector.Error as err:
         messagebox.showerror("Ошибка БД", f"Ошибка: {err}")
 
