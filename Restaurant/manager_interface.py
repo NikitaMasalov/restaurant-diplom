@@ -48,7 +48,7 @@ def open_manager_interface(user_data):
         try:
             conn = get_connection()
             cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT id, name, phone, position FROM employee ORDER BY name")
+            cursor.execute("SELECT id, name, phone, position FROM employee WHERE is_active = TRUE ORDER BY name")
 
             for row in cursor.fetchall():
                 employees_frame.tree.insert("", "end", values=(
@@ -525,9 +525,11 @@ def open_manager_interface(user_data):
                 cursor = conn.cursor(dictionary=True)
 
                 if search_type == "Имя":
-                    cursor.execute("SELECT * FROM employee WHERE name LIKE %s", (f"%{search_text}%",))
+                    cursor.execute("SELECT * FROM employee WHERE name LIKE %s AND is_active = TRUE",
+                                   (f"%{search_text}%",))
                 elif search_type == "Телефон":
-                    cursor.execute("SELECT * FROM employee WHERE phone LIKE %s", (f"%{search_text}%",))
+                    cursor.execute("SELECT * FROM employee WHERE phone LIKE %s AND is_active = TRUE",
+                                   (f"%{search_text}%",))
 
                 employees = cursor.fetchall()
 
@@ -583,7 +585,7 @@ def open_manager_interface(user_data):
 
             employee_id = employees_frame.tree.item(selected[0])['values'][0]
 
-            password = simpledialog.askstring("Подтверждение", "Введите пароль для подтверждения удаления:", show='*')
+            password = simpledialog.askstring("Подтверждение", "Введите пароль для подтверждения изменения:", show='*')
             if not password:
                 return
 
@@ -593,6 +595,7 @@ def open_manager_interface(user_data):
                 conn = get_connection()
                 cursor = conn.cursor()
 
+                # Проверка пароля текущего пользователя
                 cursor.execute("SELECT password_cash FROM employee WHERE id = %s", (user_data['id'],))
                 result = cursor.fetchone()
 
@@ -607,12 +610,13 @@ def open_manager_interface(user_data):
                     messagebox.showerror("Ошибка", "Неверный пароль")
                     return
 
-                cursor.execute("DELETE FROM employee WHERE id = %s", (employee_id,))
+                # Устанавливаем is_active = FALSE вместо удаления
+                cursor.execute("UPDATE employee SET is_active = FALSE WHERE id = %s", (employee_id,))
                 conn.commit()
-                messagebox.showinfo("Успех", "Сотрудник удален")
+                messagebox.showinfo("Успех", "Сотрудник деактивирован")
                 update_employees()
             except Exception as e:
-                messagebox.showerror("Ошибка", f"Не удалось удалить сотрудника: {str(e)}")
+                messagebox.showerror("Ошибка", f"Не удалось деактивировать сотрудника: {str(e)}")
             finally:
                 if cursor:
                     cursor.close()
