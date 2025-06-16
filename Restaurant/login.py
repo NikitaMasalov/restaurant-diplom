@@ -43,7 +43,7 @@ def login():
                 if user_data["position"] == "Кассир":
                     open_kassa_interface(user_data)
                 elif user_data["position"] == "Повар":
-                    open_kitchen_interface(user_data)
+                    open_kitchen_choice(user_data)
                 elif user_data["position"] == "Менеджер":
                     open_manager_choice(user_data)
                 else:
@@ -81,6 +81,25 @@ def open_manager_choice(user_data):
     btn_manager.pack(pady=10, fill=tk.X, padx=50)
 
     choice_window.mainloop()
+
+def open_kitchen_choice(user_data):
+    choice_window_kitchen = tk.Tk()
+    choice_window_kitchen.title("Выбор интерфейса")
+    choice_window_kitchen.geometry("400x300")
+
+    label = tk.Label(choice_window_kitchen, text="Выберите интерфейс:", font=("Arial", 16))
+    label.pack(pady=20)
+
+    btn_cook = tk.Button(choice_window_kitchen, text="Кухня", font=("Arial", 14),
+                         command=lambda: [open_kitchen_interface(user_data)])
+    btn_cook.pack(pady=10, fill=tk.X, padx=50)
+
+    btn_blanks = tk.Button(choice_window_kitchen, text="Заготовки", font=("Arial", 14),
+                           command=lambda: [open_ingredients_window(user_data)])
+    btn_blanks.pack(pady=10, fill=tk.X, padx=50)
+
+    choice_window_kitchen.mainloop()
+
 
 root = tk.Tk()
 root.title("Вход в систему")
